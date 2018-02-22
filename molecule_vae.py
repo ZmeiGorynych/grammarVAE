@@ -4,28 +4,8 @@ import numpy as np
 import zinc_grammar
 import models.model_zinc
 import models.model_zinc_str
+from zinc_tokenizer import get_zinc_tokenizer
 
-
-def get_zinc_tokenizer(cfg):
-    long_tokens = filter(lambda a: len(a) > 1, cfg._lexical_index.keys())
-    replacements = ['$','%','^'] # ,'&']
-    assert len(long_tokens) == len(replacements)
-    for token in replacements: 
-        assert not cfg._lexical_index.has_key(token)
-    
-    def tokenize(smiles):
-        for i, token in enumerate(long_tokens):
-            smiles = smiles.replace(token, replacements[i])
-        tokens = []
-        for token in smiles:
-            try:
-                ix = replacements.index(token)
-                tokens.append(long_tokens[ix])
-            except:
-                tokens.append(token)
-        return tokens
-    
-    return tokenize
 
 def pop_or_nothing(S):
     try: return S.pop()
